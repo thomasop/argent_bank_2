@@ -1,11 +1,13 @@
 import React from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
+import CheckUserLog from "../Components/CheckUserLog";
 
 const Home = () => {
   return (
     <>
-      <Header />
+    <CheckUserLog />
+      <Header type={"nolog"} />
       <main>
         <div className="hero">
           <section className="hero-content">

@@ -1,11 +1,12 @@
-import React from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
+import CheckUserLog from "../Components/CheckUserLog";
 
 const Profil = () => {
   return (
     <>
-      <Header />
+      <CheckUserLog />
+      <Header type={"log"} />
       <main className="main bg-dark">
         <div className="header">
           <h1>

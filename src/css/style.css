@@ -289,3 +289,13 @@ html {
       width: 200px;
     }
   }
+
+  .errorMessage {
+    color: red;
+    margin: 5px 0px -5px 0px;
+  }
+
+  .errorMessages {
+    color: red;
+    margin: 5px 0px -5px 0px;
+  }
