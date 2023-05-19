@@ -3,7 +3,7 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import CheckUserLog from "../Components/CheckUserLog";
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <>
     <CheckUserLog />

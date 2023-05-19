@@ -29,6 +29,7 @@ const FetchLogin: React.FC<Proptype> = ({ usernameInput, passwordInput, setSendF
         document.cookie = "token=" + json.body.token + "; Max-Age=900000";
         document.cookie = "message=" + json.message + "; Max-Age=900000";
         document.cookie = "status=" + json.status + "; Max-Age=900000";
+        navigate('/profil')
       } else {
         setSendForm(false)
         let errorMessages = document.querySelector('.errorMessages')

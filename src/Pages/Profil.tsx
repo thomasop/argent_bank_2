@@ -1,8 +1,9 @@
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import CheckUserLog from "../Components/CheckUserLog";
+import React from "react";
 
-const Profil = () => {
+const Profil: React.FC = () => {
   return (
     <>
       <CheckUserLog />

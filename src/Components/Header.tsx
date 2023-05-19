@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Logout from "./Logout";
 
 interface Proptype {
   type: string;
 }
 
 const Header: React.FC<Proptype> = ({ type }) => {
+  const [logout, setLogout] = useState<Boolean>(false);
   const jsxRender = () => {
     if (type === "nolog") {
       return (
@@ -42,10 +44,10 @@ const Header: React.FC<Proptype> = ({ type }) => {
               <i className="fa fa-user-circle"></i>
               Tony
             </Link>
-            <a className="main-nav-item" href="./index.html">
+            <Link className="main-nav-item" to="" onClick={() => setLogout(true)}>
               <i className="fa fa-sign-out"></i>
               Sign Out
-            </a>
+            </Link>
           </div>
         </>
       );
@@ -53,6 +55,7 @@ const Header: React.FC<Proptype> = ({ type }) => {
   };
   return (
     <>
+      {logout === true && <Logout />}
       <nav className="main-nav">{jsxRender()}</nav>
     </>
   );
