@@ -2,10 +2,25 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import CheckUserLog from "../Components/CheckUserLog";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../utils/store";
+import Logout from "../Components/Logout";
+import EditUser from "../Components/display/EditUser";
+import FetchUser from "../Components/fetch/FetchUser";
 
-const Profil: React.FC = () => {
+/**
+ * React component - Home page
+ * @return {JSX.Element}
+ */
+const Profil = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const { firstName, lastName } = useSelector((state: RootState) => state.user);
+  const { display } = useSelector((state: RootState) => state.editBtn);
+  const { logout } = useSelector((state: RootState) => state.logoutUser);
   return (
     <>
+      {logout === true && <Logout />}
+      <FetchUser />
       <CheckUserLog />
       <Header type={"log"} />
       <main className="main bg-dark">
@@ -13,9 +28,21 @@ const Profil: React.FC = () => {
           <h1>
             Welcome back
             <br />
-            Tony Jarvis!
+            {firstName} {lastName}
           </h1>
-          <button className="edit-button">Edit Name</button>
+          {(display === false && (
+            <button
+              className="edit-button"
+              onClick={() => {
+                dispatch({
+                  type: "editBtn/toggle",
+                });
+              }}
+            >
+              Edit Name
+            </button>
+          )) ||
+            (display === true && <EditUser />)}
         </div>
         <h2 className="sr-only">Accounts</h2>
         <section className="account">

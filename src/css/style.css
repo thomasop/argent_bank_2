@@ -299,3 +299,52 @@ html {
     color: red;
     margin: 5px 0px -5px 0px;
   }
+
+  .editBtn {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .editBtn__flex {
+    display: flex;
+  }
+
+  .editBtn__input {
+    padding: 10px 0px 10px 20px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  .editBtn__input--right {
+    margin-right: 10px;
+  }
+
+  .editBtn__input--left {
+    margin-left: 10px;
+  }
+
+  .editBtn__btn {
+    padding: 5px 20px;
+    border: 1px solid blue;
+    background-color: white;
+    border-radius: 5px;
+    color: blue;
+    width: 80px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  .editBtn__btn--right {
+    margin-right: 10px;
+  }
+
+  .editBtn__btn--left {
+    margin-left: 10px;
+  }
+
+  .editBtn__error {
+    margin-top: 10px;
+    color: red;
+  }

@@ -1,6 +1,10 @@
 import React from "react";
 
-const Footer: React.FC = () => {
+/**
+ * React component - Display footer
+ * @return {JSX.Element}
+ */
+const Footer = (): JSX.Element => {
   return (
     <footer className="footer">
       <p className="footer-text">Copyright 2020 Argent Bank</p>

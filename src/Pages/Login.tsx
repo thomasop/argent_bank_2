@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-import FetchLogin from "../Components/FetchLogin";
+import FetchLogin from "../Components/fetch/FetchLogin";
 import CheckUserLog from "../Components/CheckUserLog";
 
-const Login: React.FC = () => {
+/**
+ * React component - Home page
+ * @return {JSX.Element}
+ */
+const Login = (): JSX.Element => {
   const [usernameInput, setUsernameInput] = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");
+  const [rememberInput, setRememberInput] = useState<boolean>(false);
   const [sendForm, setSendForm] = useState<boolean>(false);
   const [validTextInput, setValidTextInput] = useState<boolean>(false);
   const [validPasswordInput, setValidPasswordInput] = useState<boolean>(false);
@@ -49,6 +54,10 @@ const Login: React.FC = () => {
     }
   };
 
+  const handlerRememberInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRememberInput(e.target.checked)
+  }
+ 
   const messageError = (
     e: React.ChangeEvent<HTMLInputElement>,
     message: string
@@ -65,14 +74,15 @@ const Login: React.FC = () => {
   };
   return (
     <>
-      <CheckUserLog />
       {sendForm === true && (
         <FetchLogin
           usernameInput={usernameInput}
           passwordInput={passwordInput}
           setSendForm={setSendForm}
+          rememberInput={rememberInput}
         />
       )}
+      <CheckUserLog />
       <Header type={"nolog"} />
       <main className="main bg-dark">
         <section className="sign-in-content">
@@ -84,9 +94,9 @@ const Login: React.FC = () => {
             }}
           >
             <div className="input-wrapper">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="username">Email</label>
               <input
-                type="text"
+                type="email"
                 id="username"
                 onChange={(e) => handlerUsernameInput(e)}
                 required
@@ -104,7 +114,7 @@ const Login: React.FC = () => {
               <div className="errorMessage"></div>
             </div>
             <div className="input-remember">
-              <input type="checkbox" id="remember-me" />
+              <input type="checkbox" id="remember-me" onChange={(e) => handlerRememberInput(e)} />
               <label htmlFor="remember-me">Remember me</label>
             </div>
             <button className="sign-in-button">Sign In</button>
