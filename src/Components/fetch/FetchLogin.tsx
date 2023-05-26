@@ -41,7 +41,6 @@ const FetchLogin = ({
       });
       let json = await response.json();
       if (json.status === 200) {
-        console.log(rememberInput);
         if (rememberInput === true) {
           var expiryDate = new Date();
           expiryDate.setMonth(expiryDate.getMonth() + 1);

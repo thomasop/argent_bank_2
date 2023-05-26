@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface AuthType {
-    logout: boolean
+    logout: boolean | null
 }
 
 const initialState: AuthType = {
-    logout: false,
+    logout: null,
 }
 
 /**
@@ -16,7 +16,7 @@ export const logoutUser = createSlice({
     initialState,
     reducers: {
         toggle: (state, action) => {
-            state.logout = true
+            state.logout = action.payload.logout
         }
     }
 })

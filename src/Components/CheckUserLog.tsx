@@ -1,12 +1,16 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import Logout from "./Logout";
 
+interface Proptype {
+  page: string
+}
 /**
  * React component - Check if cookie exist
  * @return {null}
  */
-const CheckUserLog = (): null => {
+const CheckUserLog = ({page}: Proptype): null => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -49,9 +53,9 @@ const CheckUserLog = (): null => {
           status: "",
         },
       });
-      navigate("/login");
+      page === 'home' ? navigate("/") : navigate("/login")
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, page]);
   return null;
 };
 

@@ -23,8 +23,13 @@ const FetchUser = (): null => {
       if (json.status !== 200) {
         dispatch({
           type: "logoutUser/toggle",
+          payload: { logout: true}
         });
       } else {
+        dispatch({
+          type: "logoutUser/toggle",
+          payload: { logout: false}
+        });
         dispatch({
           type: "user/storeUser",
           payload: {

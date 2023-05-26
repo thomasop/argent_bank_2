@@ -1,23 +1,15 @@
-import React, { useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import CheckUserLog from "../Components/CheckUserLog";
-import { useSelector } from "react-redux";
-import { RootState } from "../utils/store";
-import Logout from "../Components/Logout";
 
 /**
  * React component - Home page
  * @return {JSX.Element}
  */
 const Home = (): JSX.Element => {
-  const { logout } = useSelector((state: RootState) => state.logoutUser);
-  const [Userlogout, setUserLogout] = useState<Boolean>(false);
   return (
     <>
-      {logout === true && setUserLogout(true)}
-      {Userlogout === true && <Logout />}
-      <CheckUserLog />
+      <CheckUserLog page={"home"} />
       <Header type={"nolog"} />
       <main>
         <div className="hero">

@@ -2,16 +2,18 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../utils/store";
 
+interface Proptype {
+  firstNameInput: string;
+  lastNameInput: string;
+}
+
 /**
  * React component - Fetch API for edit user
  * @return {null}
  */
-const FetchEdit = (): null => {
+const FetchEdit = ({ firstNameInput, lastNameInput }: Proptype): null => {
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
-  const { firstName, lastName } = useSelector(
-    (state: RootState) => state.editUser
-  );
   const { email, id, updatedAt, createdAt } = useSelector(
     (state: RootState) => state.user
   );
@@ -25,8 +27,8 @@ const FetchEdit = (): null => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
+          firstName: firstNameInput,
+          lastName: lastNameInput,
         }),
       });
       let json = await response.json();
@@ -36,8 +38,8 @@ const FetchEdit = (): null => {
           payload: {
             id: id,
             email: email,
-            firstName: firstName,
-            lastName: lastName,
+            firstName: firstNameInput,
+            lastName: lastNameInput,
             createdAt: createdAt,
             updatedAt: json.body.updatedAt,
           },
@@ -48,7 +50,16 @@ const FetchEdit = (): null => {
       }
     };
     editData();
-  }, [createdAt, dispatch, email, firstName, id, lastName, token, updatedAt]);
+  }, [
+    createdAt,
+    dispatch,
+    email,
+    firstNameInput,
+    id,
+    lastNameInput,
+    token,
+    updatedAt,
+  ]);
   return null;
 };
 
