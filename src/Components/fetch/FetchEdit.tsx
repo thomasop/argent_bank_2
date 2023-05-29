@@ -9,6 +9,9 @@ interface Proptype {
 
 /**
  * React component - Fetch API for edit user
+ * @param {Proptype} Props
+ * @param {string} Props.firstNameInput - get firstname user input for login
+ * @param {string} Props.lastNameInput - get lastname user input for login
  * @return {null}
  */
 const FetchEdit = ({ firstNameInput, lastNameInput }: Proptype): null => {

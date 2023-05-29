@@ -1,16 +1,27 @@
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import CheckUserLog from "../Components/CheckUserLog";
+import { useState } from "react";
+import FetchUser from "../Components/fetch/FetchUser";
 
 /**
  * React component - Home page
  * @return {JSX.Element}
  */
 const Home = (): JSX.Element => {
+  const [log, setLog] = useState<boolean>(false);
   return (
     <>
-      <CheckUserLog page={"home"} />
-      <Header type={"nolog"} />
+      <CheckUserLog page={"home"} setLog={setLog} />
+
+      {(log === false && <Header type={"nolog"} />) ||
+        (log === true && (
+          <>
+            <FetchUser />
+            <Header type={"log"} />
+          </>
+        ))}
+
       <main>
         <div className="hero">
           <section className="hero-content">

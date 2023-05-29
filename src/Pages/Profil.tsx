@@ -19,7 +19,7 @@ const Profil = (): JSX.Element => {
   const { logout } = useSelector((state: RootState) => state.logoutUser);
   return (
     <>
-      <CheckUserLog page={"profil"} />
+      <CheckUserLog page={"profil"} setLog={null} />
       <FetchUser />
       {(logout === true && <Logout />) ||
         (logout === false && (

@@ -1,16 +1,19 @@
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Logout from "./Logout";
 
 interface Proptype {
-  page: string
+  page: string;
+  setLog: Dispatch<SetStateAction<boolean>> | null
 }
 /**
  * React component - Check if cookie exist
+ * @param {Proptype} Props
+ * @param {string} Props.page - get what is the current page
+ * @param {Dispatch<SetStateAction<boolean>> | null} Props.setLog - edit if user is log
  * @return {null}
  */
-const CheckUserLog = ({page}: Proptype): null => {
+const CheckUserLog = ({ page, setLog }: Proptype): null => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -43,7 +46,12 @@ const CheckUserLog = ({page}: Proptype): null => {
           status: cookieStatus,
         },
       });
-      navigate("/profil");
+      if (setLog) setLog(true)
+      page === "profil"
+        ? navigate("/profil")
+        : page === "home"
+        ? navigate("/")
+        : navigate("/profil");
     } else {
       dispatch({
         type: "auth/storeToken",
@@ -53,9 +61,10 @@ const CheckUserLog = ({page}: Proptype): null => {
           status: "",
         },
       });
-      page === 'home' ? navigate("/") : navigate("/login")
+      if (setLog) setLog(false)
+      page === "home" ? navigate("/") : navigate("/login");
     }
-  }, [dispatch, navigate, page]);
+  }, [dispatch, navigate, page, setLog]);
   return null;
 };
 

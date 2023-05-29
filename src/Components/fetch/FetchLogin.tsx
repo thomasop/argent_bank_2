@@ -50,11 +50,13 @@ const FetchLogin = ({
             "message=" + json.message + ";expires=" + expiryDate.toUTCString();
           document.cookie =
             "status=" + json.status + ";expires=" + expiryDate.toUTCString();
+          setSendForm(false);
           navigate("/profil");
         } else {
           document.cookie = "token=" + json.body.token;
           document.cookie = "message=" + json.message;
           document.cookie = "status=" + json.status;
+          setSendForm(false);
           navigate("/profil");
         }
       } else {

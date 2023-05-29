@@ -13,10 +13,10 @@ const Login = (): JSX.Element => {
   const [passwordInput, setPasswordInput] = useState<string>("");
   const [rememberInput, setRememberInput] = useState<boolean>(false);
   const [sendForm, setSendForm] = useState<boolean>(false);
-  const [validTextInput, setValidTextInput] = useState<boolean>(false);
+  const [validEmailInput, setValidEmailInput] = useState<boolean>(false);
   const [validPasswordInput, setValidPasswordInput] = useState<boolean>(false);
-  const refInputEmail = useRef(null);
-  const refInputPassword = useRef(null);
+  const refEmailDivError = useRef(null);
+  const refPasswordDivError = useRef(null);
 
   const handlerUsernameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 3) {
@@ -53,7 +53,7 @@ const Login = (): JSX.Element => {
     type === "email"
       ? setUsernameInput(e.target.value)
       : setPasswordInput(e.target.value);
-    type === "email" ? setValidTextInput(valid) : setValidPasswordInput(valid);
+    type === "email" ? setValidEmailInput(valid) : setValidPasswordInput(valid);
     messageError(e, text);
     return valid;
   };
@@ -72,19 +72,19 @@ const Login = (): JSX.Element => {
 
   const handlerSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validTextInput === true && validPasswordInput === true) {
+    if (validEmailInput === true && validPasswordInput === true) {
       setSendForm(true);
     } else {
-      if (validTextInput === false) {
+      if (validEmailInput === false) {
         messageErrorSubmit(
-          refInputEmail,
+          refEmailDivError,
           usernameInput,
           "Username : need to be not empty"
         );
       }
       if (validPasswordInput === false) {
         messageErrorSubmit(
-          refInputPassword,
+          refPasswordDivError,
           passwordInput,
           "Password : need to be not empty"
         );
@@ -114,7 +114,7 @@ const Login = (): JSX.Element => {
           rememberInput={rememberInput}
         />
       )}
-      <CheckUserLog page={"login"} />
+      <CheckUserLog page={"login"} setLog={null} />
       <Header type={"nolog"} />
       <main className="main bg-dark">
         <section className="sign-in-content">
@@ -128,11 +128,12 @@ const Login = (): JSX.Element => {
             <div className="input-wrapper">
               <label htmlFor="username">Email</label>
               <input
-                type="text"
+                type="email"
                 id="username"
                 onChange={(e) => handlerUsernameInput(e)}
+                required
               />
-              <div ref={refInputEmail} className="errorMessage"></div>
+              <div ref={refEmailDivError} className="errorMessage"></div>
             </div>
             <div className="input-wrapper">
               <label htmlFor="password">Password</label>
@@ -140,8 +141,9 @@ const Login = (): JSX.Element => {
                 type="password"
                 id="password"
                 onChange={(e) => handlerPasswordInput(e)}
+                required
               />
-              <div ref={refInputPassword} className="errorMessage"></div>
+              <div ref={refPasswordDivError} className="errorMessage"></div>
             </div>
             <div className="input-remember">
               <input

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Logout from "./Logout";
 import { useSelector } from "react-redux";
@@ -53,7 +53,11 @@ const Header = ({ type }: Proptype): JSX.Element => {
               <i className="fa fa-user-circle"></i>
               {firstName}
             </Link>
-            <Link className="main-nav-item" to="" onClick={() => setLogout(true)}>
+            <Link
+              className="main-nav-item"
+              to=""
+              onClick={() => setLogout(true)}
+            >
               <i className="fa fa-sign-out"></i>
               Sign Out
             </Link>
