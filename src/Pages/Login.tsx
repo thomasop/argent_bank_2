@@ -9,7 +9,7 @@ import CheckUserLog from "../Components/CheckUserLog";
  * @return {JSX.Element}
  */
 const Login = (): JSX.Element => {
-  const [usernameInput, setUsernameInput] = useState<string>("");
+  const [emailInput, setEmailInput] = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");
   const [rememberInput, setRememberInput] = useState<boolean>(false);
   const [sendForm, setSendForm] = useState<boolean>(false);
@@ -18,13 +18,14 @@ const Login = (): JSX.Element => {
   const refEmailDivError = useRef(null);
   const refPasswordDivError = useRef(null);
 
-  const handlerUsernameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length > 3) {
+  const handlerEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const mailregex = /^([\w.-]+)@([\w-]+)((\.(\w){2,})+)$/;
+    if (mailregex.test(e.target.value)) {
       handler(e, true, "", "email");
-    } else if (e.target.value.length > 0 && e.target.value.length < 4) {
-      handler(e, false, "Username : min length need to be 4", "email");
+    } else if (e.target.value.length === 0) {
+      handler(e, false, "", "email");
     } else {
-      handler(e, false, "Username : need to be not empty", "email");
+      handler(e, false, "Email : need to be a valid email", "email");
     }
   };
 
@@ -33,12 +34,12 @@ const Login = (): JSX.Element => {
     if (regex.test(e.target.value)) {
       handler(e, true, "", "password");
     } else if (e.target.value.length === 0) {
-      handler(e, false, "Password : need to be not empty", "password");
+      handler(e, false, "", "password");
     } else {
       handler(
         e,
         false,
-        "Password : A letter in upper case, lower case, a number and 8 characters minimum",
+        "Password : Need a letter in lower case, a number and 8 characters minimum",
         "password"
       );
     }
@@ -51,7 +52,7 @@ const Login = (): JSX.Element => {
     type: string
   ) => {
     type === "email"
-      ? setUsernameInput(e.target.value)
+      ? setEmailInput(e.target.value)
       : setPasswordInput(e.target.value);
     type === "email" ? setValidEmailInput(valid) : setValidPasswordInput(valid);
     messageError(e, text);
@@ -78,8 +79,8 @@ const Login = (): JSX.Element => {
       if (validEmailInput === false) {
         messageErrorSubmit(
           refEmailDivError,
-          usernameInput,
-          "Username : need to be not empty"
+          emailInput,
+          "Email : need to be not empty"
         );
       }
       if (validPasswordInput === false) {
@@ -108,7 +109,7 @@ const Login = (): JSX.Element => {
     <>
       {sendForm === true && (
         <FetchLogin
-          usernameInput={usernameInput}
+          usernameInput={emailInput}
           passwordInput={passwordInput}
           setSendForm={setSendForm}
           rememberInput={rememberInput}
@@ -130,7 +131,7 @@ const Login = (): JSX.Element => {
               <input
                 type="email"
                 id="username"
-                onChange={(e) => handlerUsernameInput(e)}
+                onChange={(e) => handlerEmailInput(e)}
                 required
               />
               <div ref={refEmailDivError} className="errorMessage"></div>

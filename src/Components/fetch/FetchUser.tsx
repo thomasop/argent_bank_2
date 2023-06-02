@@ -9,6 +9,7 @@ import { RootState } from "../../utils/store";
 const FetchUser = (): null => {
   const { token } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const getData = async () => {
       let response = await fetch("http://localhost:3001/api/v1/user/profile", {
@@ -23,12 +24,12 @@ const FetchUser = (): null => {
       if (json.status !== 200) {
         dispatch({
           type: "logoutUser/toggle",
-          payload: { logout: true}
+          payload: { logout: true },
         });
       } else {
         dispatch({
           type: "logoutUser/toggle",
-          payload: { logout: false}
+          payload: { logout: false },
         });
         dispatch({
           type: "user/storeUser",

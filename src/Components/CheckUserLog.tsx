@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 interface Proptype {
   page: string;
-  setLog: Dispatch<SetStateAction<boolean>> | null
+  setLog: Dispatch<SetStateAction<boolean>> | null;
 }
 /**
  * React component - Check if cookie exist
@@ -46,7 +46,7 @@ const CheckUserLog = ({ page, setLog }: Proptype): null => {
           status: cookieStatus,
         },
       });
-      if (setLog) setLog(true)
+      if (setLog) setLog(true);
       page === "profil"
         ? navigate("/profil")
         : page === "home"
@@ -61,7 +61,7 @@ const CheckUserLog = ({ page, setLog }: Proptype): null => {
           status: "",
         },
       });
-      if (setLog) setLog(false)
+      if (setLog) setLog(false);
       page === "home" ? navigate("/") : navigate("/login");
     }
   }, [dispatch, navigate, page, setLog]);
