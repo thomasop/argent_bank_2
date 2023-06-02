@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../utils/store";
 import FetchEdit from "../fetch/FetchEdit";
@@ -14,21 +14,21 @@ const EditUser = (): JSX.Element => {
   const [editUser, setEditUser] = useState<boolean>(false);
   const [displayError, setDisplayError] = useState<boolean>(false);
   const [validFirstNameInput, setValidFirstNameInput] =
-    useState<boolean>(false);
-  const [validLastNameInput, setValidLastNameInput] = useState<boolean>(false);
+    useState<boolean>(true);
+  const [validLastNameInput, setValidLastNameInput] = useState<boolean>(true);
   const { firstName, lastName } = useSelector((state: RootState) => state.user);
   const handlerFirstNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 0) {
       handler(e, "first", true, "");
-    } else {
-      handler(e, "first", false, "First name can't be null");
+    } else if (e.target.value.length === 0) {
+      handler(e, "first", false, "");
     }
   };
   const handlerLastNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 0) {
       handler(e, "last", true, "");
-    } else {
-      handler(e, "last", false, "Last name can't be null");
+    } else if (e.target.value.length === 0) {
+      handler(e, "last", false, "");
     }
   };
 
@@ -58,6 +58,10 @@ const EditUser = (): JSX.Element => {
       setDisplayError(true);
     }
   };
+  useEffect(() => {
+    setFirstNameInput(firstName);
+    setLastNameInput(lastName);
+  }, [firstName, lastName]);
   return (
     <>
       {editUser === true && (
@@ -113,7 +117,7 @@ const EditUser = (): JSX.Element => {
         </div>
         {displayError === true && (
           <div className="editBtn__error">
-            First name or last name can't be null
+            First name or last name cannot be null
           </div>
         )}
       </div>
