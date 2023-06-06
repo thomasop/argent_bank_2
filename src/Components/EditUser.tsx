@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../utils/store";
-import FetchEdit from "../fetch/FetchEdit";
+import { RootState } from "../utils/store";
+import { useSetProfileMutation } from "../hooks/useAPI";
 
 /**
  * React component - Display input and button for edit user
@@ -9,14 +9,15 @@ import FetchEdit from "../fetch/FetchEdit";
  */
 const EditUser = (): JSX.Element => {
   const dispatch = useDispatch();
+  const [editUser, result] = useSetProfileMutation();
   const [firstNameInput, setFirstNameInput] = useState<string>("");
   const [lastNameInput, setLastNameInput] = useState<string>("");
-  const [editUser, setEditUser] = useState<boolean>(false);
   const [displayError, setDisplayError] = useState<boolean>(false);
-  const [validFirstNameInput, setValidFirstNameInput] =
-    useState<boolean>(true);
+  const [validFirstNameInput, setValidFirstNameInput] = useState<boolean>(true);
   const [validLastNameInput, setValidLastNameInput] = useState<boolean>(true);
-  const { firstName, lastName } = useSelector((state: RootState) => state.user);
+  const { email, id, createdAt, firstName, lastName } = useSelector(
+    (state: RootState) => state.user
+  );
   const handlerFirstNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 0) {
       handler(e, "first", true, "");
@@ -50,10 +51,29 @@ const EditUser = (): JSX.Element => {
       : setValidLastNameInput(valid);
   };
 
-  const handlerSubmit = () => {
+  const handlerSubmit = async () => {
     if (validFirstNameInput === true && validLastNameInput === true) {
-      setEditUser(true);
       setDisplayError(false);
+      const { data, error }: any = await editUser({
+        firstName: firstNameInput,
+        lastName: lastNameInput,
+      });
+      if (data && data.status === 200) {
+        dispatch({
+          type: "user/storeUser",
+          payload: {
+            id: id,
+            email: email,
+            firstName: firstNameInput,
+            lastName: lastNameInput,
+            createdAt: createdAt,
+            updatedAt: data.body.updatedAt,
+          },
+        });
+        dispatch({
+          type: "editBtn/toggle",
+        });
+      }
     } else {
       setDisplayError(true);
     }
@@ -64,12 +84,6 @@ const EditUser = (): JSX.Element => {
   }, [firstName, lastName]);
   return (
     <>
-      {editUser === true && (
-        <FetchEdit
-          firstNameInput={firstNameInput}
-          lastNameInput={lastNameInput}
-        />
-      )}
       <div className="editBtn">
         <div className="editBtn__flex">
           <div>

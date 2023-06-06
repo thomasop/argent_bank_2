@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 interface AuthType {
     token: string
-    message: string
-    status: string
+    isLog: boolean
 }
 
 const initialState: AuthType = {
     token: "",
-    message: "",
-    status: "",
+    isLog: false,
 }
 
 /**
@@ -21,8 +20,15 @@ export const auth = createSlice({
     reducers: {
         storeToken: (state, action) => {
             state.token = action.payload.token
-            state.message = action.payload.message
-            state.status = action.payload.status
-        }
-    }
+            state.isLog = action.payload.isLog
+        },
+        Purge: (state, action) => {
+            return initialState
+        },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => {
+          return initialState;
+        });
+      },
 })

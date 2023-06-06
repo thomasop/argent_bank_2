@@ -1,12 +1,11 @@
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-import CheckUserLog from "../Components/CheckUserLog";
-import React from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../utils/store";
 import Logout from "../Components/Logout";
-import EditUser from "../Components/display/EditUser";
-import FetchUser from "../Components/fetch/FetchUser";
+import EditUser from "../Components/EditUser";
+import { useGetProfileMutation } from "../hooks/useAPI";
 
 /**
  * React component - Home page
@@ -14,17 +13,59 @@ import FetchUser from "../Components/fetch/FetchUser";
  */
 const Profil = (): JSX.Element => {
   const dispatch = useDispatch();
+  const [getUserData, result] = useGetProfileMutation();
   const { firstName, lastName } = useSelector((state: RootState) => state.user);
+  const { isLog } = useSelector((state: RootState) => state.auth);
   const { display } = useSelector((state: RootState) => state.editBtn);
-  const { logout } = useSelector((state: RootState) => state.logoutUser);
+  const [logout, setLogout] = useState(false);
+
+  useEffect(() => {
+    let cookieToken = document.cookie.replace(
+      /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+    let cookieIsLog = document.cookie.replace(
+      /(?:(?:^|.*;\s*)isLog\s*=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+    if (
+      !(
+        cookieToken &&
+        cookieIsLog &&
+        cookieToken.length > 0 &&
+        cookieIsLog.length > 0
+      )
+    ) {
+      setLogout(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { data, error }: any = await getUserData({});
+      if (data.body) {
+        dispatch({
+          type: "user/storeUser",
+          payload: {
+            id: data.body.id,
+            email: data.body.email,
+            firstName: data.body.firstName,
+            lastName: data.body.lastName,
+            createdAt: data.body.createdAt,
+            updatedAt: data.body.updatedAt,
+          },
+        });
+      }
+    };
+    if (isLog === true) fetch();
+  }, [dispatch, getUserData, isLog]);
   return (
     <>
-      <CheckUserLog page={"profil"} setLog={null} />
-      <FetchUser />
-      {(logout === true && <Logout />) ||
-        (logout === false && (
+      {logout === true && <Logout />}
+      {(isLog === false && <Logout />) ||
+        (isLog === true && (
           <>
-            <Header type={"log"} />
+            <Header />
             <main className="main bg-dark">
               <div className="header">
                 <h1>

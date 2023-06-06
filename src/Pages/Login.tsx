@@ -1,18 +1,21 @@
 import React, { useRef, useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-import FetchLogin from "../Components/fetch/FetchLogin";
-import CheckUserLog from "../Components/CheckUserLog";
+import { useLoginUserMutation } from "../hooks/useAPI";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 /**
  * React component - Home page
  * @return {JSX.Element}
  */
 const Login = (): JSX.Element => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loginUser, result] = useLoginUserMutation();
   const [emailInput, setEmailInput] = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");
   const [rememberInput, setRememberInput] = useState<boolean>(false);
-  const [sendForm, setSendForm] = useState<boolean>(false);
   const [validEmailInput, setValidEmailInput] = useState<boolean>(false);
   const [validPasswordInput, setValidPasswordInput] = useState<boolean>(false);
   const refEmailDivError = useRef(null);
@@ -71,10 +74,40 @@ const Login = (): JSX.Element => {
     nextHtmlElement.textContent = message;
   };
 
-  const handlerSubmit = (e: React.FormEvent) => {
+  const handlerSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validEmailInput === true && validPasswordInput === true) {
-      setSendForm(true);
+      const { data, error }: any = await loginUser({
+        email: emailInput,
+        password: passwordInput,
+      });
+      if (data && data.status === 200) {
+        dispatch({
+          type: "auth/storeToken",
+          payload: {
+            token: data.body.token,
+            isLog: true,
+          },
+        });
+        if (rememberInput === true) {
+          console.log('test')
+          var expiryDate = new Date();
+          expiryDate.setMonth(expiryDate.getMonth() + 1);
+          document.cookie =
+            "token=" + data.body.token + ";expires=" + expiryDate.toUTCString();
+          document.cookie = "isLog=true;expires=" + expiryDate.toUTCString();
+          navigate("/profil");
+        } else {
+          document.cookie = "token=" + data.body.token;
+          document.cookie = "isLog=true";
+          navigate("/profil");
+        }
+      } else if (error && error.status === 400) {
+        console.log(data);
+        console.log(error);
+        let errorMessages = document.querySelector(".errorMessages");
+        if (errorMessages) errorMessages.textContent = error.data.message;
+      }
     } else {
       if (validEmailInput === false) {
         messageErrorSubmit(
@@ -107,16 +140,7 @@ const Login = (): JSX.Element => {
   };
   return (
     <>
-      {sendForm === true && (
-        <FetchLogin
-          usernameInput={emailInput}
-          passwordInput={passwordInput}
-          setSendForm={setSendForm}
-          rememberInput={rememberInput}
-        />
-      )}
-      <CheckUserLog page={"login"} setLog={null} />
-      <Header type={"nolog"} />
+      <Header />
       <main className="main bg-dark">
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>

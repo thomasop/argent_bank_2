@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 interface AuthType {
     id: string
@@ -32,6 +33,16 @@ export const user = createSlice({
             state.lastName = action.payload.lastName
             state.createdAt = action.payload.createdAt
             state.updatedAt = action.payload.updatedAt
-        }
-    }
+        },
+        Purge: (state, action) => {
+            return initialState
+        },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => {
+          return initialState;
+        });
+      },
 })
+
+export const { storeUser } = user.actions

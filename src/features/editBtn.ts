@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 interface AuthType {
     display: boolean
@@ -17,6 +18,14 @@ export const editBtn = createSlice({
     reducers: {
         toggle: (state, action) => {
             state.display = !state.display
-        }
-    }
+        },
+        Purge: (state, action) => {
+            return initialState
+        },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => {
+          return initialState;
+        });
+      },
 })

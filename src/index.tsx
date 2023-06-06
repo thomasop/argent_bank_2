@@ -7,6 +7,8 @@ import Login from "./Pages/Login";
 import Profil from "./Pages/Profil";
 import { Provider } from "react-redux";
 import { store } from "./utils/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor } from "./utils/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,13 +16,15 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profil" element={<Profil />} />
-        <Route path="/*" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profil" element={<Profil />} />
+          <Route path="/*" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </PersistGate>
   </Provider>
 );

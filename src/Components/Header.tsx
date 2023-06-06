@@ -4,21 +4,16 @@ import Logout from "./Logout";
 import { useSelector } from "react-redux";
 import { RootState } from "../utils/store";
 
-interface Proptype {
-  type: string;
-}
-
 /**
  * React component - Display footer
- * @param {Proptype} Props
- * @param {string} Props.type - display header for user log and no log
  * @return {JSX.Element}
  */
-const Header = ({ type }: Proptype): JSX.Element => {
+const Header = (): JSX.Element => {
   const { firstName } = useSelector((state: RootState) => state.user);
+  const { isLog } = useSelector((state: RootState) => state.auth);
   const [logout, setLogout] = useState<Boolean>(false);
   const jsxRender = () => {
-    if (type === "nolog") {
+    if (isLog === false) {
       return (
         <>
           <Link className="main-nav-logo" to="/">
@@ -37,7 +32,7 @@ const Header = ({ type }: Proptype): JSX.Element => {
           </div>
         </>
       );
-    } else if (type === "log") {
+    } else {
       return (
         <>
           <Link className="main-nav-logo" to="/">
